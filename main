@@ -1,14 +1,33 @@
 import sys
 import os
 
-if __name__ == "__main__":
-    global status
+
+def main() -> None:
     status = True
 
     while status:
-        match (command:= input(os.path.basename)).startswith("milo"):
-            case _ if command.split()[1] == "close":
+        try:
+            prompt = f"{os.getcwd()}$> "
+            line = input(prompt).strip()
+        except (EOFError, KeyboardInterrupt):
+            # Graceful exit on Ctrl-D / Ctrl-C
+            print()
+            break
+
+        if not line:
+            continue
+
+        parts = line.split()
+        if parts[0] != "milo":
+            continue
+
+        match (cmd:= parts[1]):
+            case "execute" | "exec":
+                pass
+
+            case "close" | "cl":
                 status = False
-            
-            case _ if command.split()[1] == "hola":
-                print("hola")
+
+
+if __name__ == "__main__":
+    main()
