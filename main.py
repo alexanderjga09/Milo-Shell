@@ -7,7 +7,7 @@ def main() -> None:
 
     while status:
         try:
-            prompt = f"{(path:= os.getcwd())}$> "
+            prompt = f"{os.getcwd()}$> "
             line = input(prompt).strip()
         except (EOFError, KeyboardInterrupt):
             # Graceful exit on Ctrl-D / Ctrl-C
