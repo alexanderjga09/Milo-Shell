@@ -7,7 +7,7 @@ def main() -> None:
 
     while status:
         try:
-            prompt = f"{os.getcwd()}$> "
+            prompt = f"{(path:= os.getcwd())}$> "
             line = input(prompt).strip()
         except (EOFError, KeyboardInterrupt):
             # Graceful exit on Ctrl-D / Ctrl-C
@@ -21,11 +21,25 @@ def main() -> None:
         if parts[0] != "milo":
             continue
 
-        match (cmd:= parts[1]):
+        match parts[1].lower():
             case "execute" | "exec":
-                pass
+                try:
+                    os.startfile(parts[2])
+                    print("\n")
 
+                except FileNotFoundError:
+                    print(f"Error: File '{parts[2]}' not found.\n")
+                
+                except IndexError:
+                    print("Error: Missing arguments for 'milo execute'. Usage: milo execute <file_path>\n")
+            
             case "close" | "cl":
+                try:
+                    os.kill(int(parts[2]))
+                except (IndexError, ValueError):
+                    print("Error: Missing or invalid process ID for 'milo close'. Usage: milo close <pid>\n")
+
+            case "quit":
                 status = False
 
 
