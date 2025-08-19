@@ -1,2 +1,14 @@
 import sys
 import os
+
+if __name__ == "__main__":
+    global status
+    status = True
+
+    while status:
+        match (command:= input(os.path.basename)).startswith("milo"):
+            case _ if command.split()[1] == "close":
+                status = False
+            
+            case _ if command.split()[1] == "hola":
+                print("hola")
